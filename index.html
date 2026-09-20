@@ -1,0 +1,267 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Android Emulator</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #101114;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1100px;
+      padding: 25px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .emulator-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 650px;
+    }
+
+    .phone {
+      width: 360px;
+      height: 640px;
+      background: #000;
+      border: 8px solid #222;
+      border-radius: 35px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 15px 50px rgba(0,0,0,.6);
+    }
+
+    /*
+      Real Android video stream will appear here later.
+    */
+
+    #androidScreen {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+      display: none;
+    }
+
+    .waiting {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background: #111827;
+    }
+
+    .android-icon {
+      font-size: 70px;
+      margin-bottom: 20px;
+    }
+
+    .waiting h2 {
+      margin: 0 0 10px;
+    }
+
+    .waiting p {
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button,
+    label {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover,
+    label:hover {
+      opacity: .85;
+    }
+
+    input {
+      display: none;
+    }
+
+    .status {
+      margin-top: 15px;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .app {
+        padding: 10px;
+      }
+
+      .phone {
+        width: min(360px, 90vw);
+        height: min(640px, 80vh);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <h1>📱 My Android Emulator</h1>
+
+    <div class="emulator-area">
+
+      <div class="phone">
+
+        <!--
+          This video element will receive the REAL Android
+          emulator WebRTC stream in the next stage.
+        -->
+
+        <video
+          id="androidScreen"
+          autoplay
+          playsinline>
+        </video>
+
+        <div class="waiting" id="waiting">
+
+          <div class="android-icon">🤖</div>
+
+          <h2>Android Emulator</h2>
+
+          <p>
+            Connecting to Android emulator...
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="buttons">
+
+      <button onclick="sendHome()">
+        🏠 Home
+      </button>
+
+      <button onclick="sendBack()">
+        ◀ Back
+      </button>
+
+      <button onclick="sendRecent()">
+        ▣ Recent
+      </button>
+
+      <button onclick="restartAndroid()">
+        🔄 Restart
+      </button>
+
+      <label>
+        📦 Upload APK
+        <input
+          type="file"
+          accept=".apk"
+          onchange="selectAPK(event)">
+      </label>
+
+    </div>
+
+    <div class="status" id="status">
+      Emulator server not connected yet.
+    </div>
+
+  </main>
+
+<script>
+
+function setStatus(message) {
+  document.getElementById("status").textContent = message;
+}
+
+function sendHome() {
+  setStatus("Home command will be sent to Android.");
+}
+
+function sendBack() {
+  setStatus("Back command will be sent to Android.");
+}
+
+function sendRecent() {
+  setStatus("Recent Apps command will be sent to Android.");
+}
+
+function restartAndroid() {
+  setStatus("Restart command will be sent to Android.");
+}
+
+function selectAPK(event) {
+
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  if (!file.name.toLowerCase().endsWith(".apk")) {
+    setStatus("Please select an APK file.");
+    return;
+  }
+
+  setStatus(
+    "APK selected: " + file.name +
+    " — emulator backend is required for installation."
+  );
+}
+
+/*
+  Real WebRTC connection will be added here.
+
+  The browser will eventually connect to:
+
+      GitHub website
+             ↓
+      WebRTC signaling
+             ↓
+      Android Emulator
+             ↓
+      Android screen/audio
+
+  We are NOT pretending this part works yet.
+*/
+
+</script>
+
+</body>
+</html>
+```
